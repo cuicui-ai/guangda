@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "专户业绩分析系统",
+  "description": "一个全面的专户投资业绩分析和可视化仪表盘，具有多维度图表、策略汇总和详细的账户跟踪功能。",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }
