@@ -1,0 +1,30 @@
+name: Deploy to Aliyun OSS
+
+on:
+  push:
+    branches:
+      - main  # 确保这里的分支名与你的主分支名一致2
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Install ossutil
+        run: |
+          sudo -v ; curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+      - name: Configure ossutil
+        run: |
+          ossutil config -e oss-cn-hongkong.aliyuncs.com -i ${{ secrets.OSS_ACCESS_KEY_ID }} -k ${{ secrets.OSS_ACCESS_KEY_SECRET }} --language CH
+      - name: Sync files to OSS
+        run: ossutil cp ./dist oss://guangda-cui/ --recursive --update
